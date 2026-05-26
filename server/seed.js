@@ -24,11 +24,11 @@ const seedDB = async () => {
 
     // 1. Create Users
     const adminUser = await User.create({
-      name: 'LeafBlog Curator',
+      name: 'Authoryn Curator',
       email: 'admin@authoryn.com',
       username: 'antigravity',
       password: 'password123',
-      bio: 'Lead curator at LeafBlog. Crafting premium articles about software development, UI/UX design, and digital minimalism.',
+      bio: 'Lead curator at Authoryn. Crafting premium articles about software development, UI/UX design, and digital minimalism.',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80',
       role: 'admin'
     });

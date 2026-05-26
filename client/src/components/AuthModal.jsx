@@ -89,7 +89,7 @@ export const AuthModal = ({ isOpen, onClose, initialTab = 'login' }) => {
               {activeTab === 'login' ? 'Welcome back' : 'Create your account'}
             </h2>
             <p className="text-xs text-text-secondary mt-1">
-              {activeTab === 'login' ? 'Access your LeafBlog writer dashboard' : 'Join our creative writing community'}
+              {activeTab === 'login' ? 'Access your Authoryn writer dashboard' : 'Join our creative writing community'}
             </p>
           </div>
 

@@ -113,7 +113,7 @@ export const Home = () => {
             <div className="flex items-center justify-between pb-3 border-b border-border-light">
               <div className="flex items-center space-x-2">
                 <RiLeafLine className="text-accent-green text-xl" />
-                <span className="font-bold text-sm">LeafBlog</span>
+                <span className="font-bold text-sm">Authoryn</span>
               </div>
               <div className="flex items-center space-x-3 text-xs text-text-secondary font-medium">
                 <span className="w-24 h-6 bg-background rounded-full flex items-center px-2.5 text-[10px] border border-border-light/60">

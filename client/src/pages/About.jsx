@@ -13,9 +13,9 @@ export const About = () => {
           <div className="inline-flex p-4 bg-soft-accent rounded-3xl text-accent-green text-4xl shadow-sm">
             <RiLeafLine />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold font-serif leading-tight">About LeafBlog</h1>
+          <h1 className="text-4xl md:text-5xl font-bold font-serif leading-tight">About Authoryn</h1>
           <p className="text-lg text-text-secondary leading-relaxed font-light">
-            LeafBlog is a MERN-stack publishing platform designed for absolute clarity, readability, and content focus. We combine typographic elegance with modern security structures.
+            Authoryn is a MERN-stack publishing platform designed for absolute clarity, readability, and content focus. We combine typographic elegance with modern security structures.
           </p>
         </div>
 
@@ -25,7 +25,7 @@ export const About = () => {
         <div className="space-y-4">
           <h2 className="text-2xl font-bold font-serif">Typographic Intent</h2>
           <p className="text-[15px] leading-relaxed text-text-secondary font-light">
-            We believe that reading online should feel like flipping through a high-end printed magazine. To achieve this, LeafBlog pairs <b>Fraunces</b>—a soft-serif font that makes long paragraphs comfortable to read—with <b>Outfit</b> and <b>Inter</b>, hyper-functional sans-serifs that manage controls, settings, and buttons with maximum layout clarity.
+            We believe that reading online should feel like flipping through a high-end printed magazine. To achieve this, Authoryn pairs <b>Fraunces</b>—a soft-serif font that makes long paragraphs comfortable to read—with <b>Outfit</b> and <b>Inter</b>, hyper-functional sans-serifs that manage controls, settings, and buttons with maximum layout clarity.
           </p>
         </div>
 

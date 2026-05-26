@@ -1,7 +1,7 @@
 import React from 'react';
 import { RiLeafLine } from 'react-icons/ri';
 
-export const LoadingSpinner = ({ fullScreen = true, message = "Loading LeafBlog..." }) => {
+export const LoadingSpinner = ({ fullScreen = true, message = "Loading Authoryn..." }) => {
   const content = (
     <div className="flex flex-col items-center justify-center space-y-4 p-8 text-center font-sans">
       <div className="relative flex items-center justify-center">

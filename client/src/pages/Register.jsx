@@ -54,7 +54,7 @@ export const Register = () => {
           </div>
           <h2 className="text-2xl font-bold font-serif text-text-primary">Create account</h2>
           <p className="text-xs text-text-secondary tracking-wide uppercase font-semibold">
-            Join the LeafBlog writer community.
+            Join the Authoryn writer community.
           </p>
         </div>
 

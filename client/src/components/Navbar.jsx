@@ -33,7 +33,7 @@ export const Navbar = () => {
         {/* Left: Brand */}
         <Link to="/" className="flex items-center space-x-2 brand-mark text-2xl font-bold tracking-tight text-text-primary hover:opacity-90 transition-opacity">
           <RiLeafLine className="text-accent-green text-3xl animate-pulse" />
-          <span className="text-text-primary font-sans font-bold tracking-tight">LeafBlog</span>
+          <span className="text-text-primary font-sans font-bold tracking-tight">Authoryn</span>
         </Link>
 
         {/* Center: Links */}
