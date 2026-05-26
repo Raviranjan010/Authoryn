@@ -20,6 +20,26 @@ exports.getComments = async (req, res, next) => {
   }
 };
 
+// @desc    Get all recent comments across the system
+// @route   GET /api/comments
+// @access  Public
+exports.getAllComments = async (req, res, next) => {
+  try {
+    const comments = await Comment.find()
+      .populate('author', 'name username avatar')
+      .populate('post', 'title slug')
+      .sort({ createdAt: -1 })
+      .limit(3);
+
+    res.status(200).json({
+      success: true,
+      comments
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Add comment to a post
 // @route   POST /api/comments/:postId
 // @access  Private

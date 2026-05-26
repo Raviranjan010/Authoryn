@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 
 export const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
+
+  // Hide global navbar on home feed and tag feeds as it's built into the layout
+  if (pathname === '/' || pathname.startsWith('/tag/')) {
+    return null;
+  }
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 18);
