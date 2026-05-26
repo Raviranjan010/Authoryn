@@ -6,21 +6,19 @@ const CommentSchema = new mongoose.Schema({
     ref: 'Post',
     required: true
   },
-  author: {
+  user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: true
   },
-  body: {
+  text: {
     type: String,
     required: [true, 'Please add a comment body'],
     trim: true,
     maxlength: [1000, 'Comment cannot be more than 1000 characters']
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
   }
+}, {
+  timestamps: true
 });
 
 module.exports = mongoose.model('Comment', CommentSchema);

@@ -12,13 +12,17 @@ const PostSchema = new mongoose.Schema({
     type: String,
     unique: true
   },
-  body: {
+  content: {
     type: String,
     required: [true, 'Please add post body content']
   },
-  coverImage: {
+  thumbnail: {
     type: String,
     default: '' // Cloudinary URL or local path
+  },
+  category: {
+    type: String,
+    default: 'Uncategorized'
   },
   tags: {
     type: [String],
@@ -43,15 +47,9 @@ const PostSchema = new mongoose.Schema({
     type: String,
     enum: ['draft', 'published'],
     default: 'draft'
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now
   }
+}, {
+  timestamps: true
 });
 
 // Create post slug from the title before saving
@@ -78,12 +76,6 @@ PostSchema.pre('validate', async function(next) {
   }
   
   this.slug = uniqueSlug;
-  next();
-});
-
-// Update the updatedAt timestamp
-PostSchema.pre('save', function(next) {
-  this.updatedAt = Date.now();
   next();
 });
 

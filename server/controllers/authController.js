@@ -39,11 +39,7 @@ exports.register = async (req, res, next) => {
     // Filter out password
     user.password = undefined;
 
-    res.status(201).json({
-      success: true,
-      token,
-      user
-    });
+    sendTokenResponse(user, 201, false, res);
   } catch (error) {
     next(error);
   }
@@ -75,16 +71,30 @@ exports.login = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
-    // Generate JWT
-    const token = generateToken(user._id, rememberMe);
-
     // Remove password from output
     user.password = undefined;
 
+    sendTokenResponse(user, 200, rememberMe, res);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Logout user / clear cookie
+// @route   POST /api/auth/logout
+// @access  Private
+exports.logout = async (req, res, next) => {
+  try {
+    res.cookie('token', 'none', {
+      expires: new Date(Date.now() + 5 * 1000),
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    });
+
     res.status(200).json({
       success: true,
-      token,
-      user
+      message: 'Logged out successfully'
     });
   } catch (error) {
     next(error);
@@ -114,4 +124,23 @@ const generateToken = (id, rememberMe) => {
     process.env.JWT_SECRET || 'authoryn_editorial_secret_987654321',
     { expiresIn: expiry }
   );
+};
+
+// Helper to send token response and set cookie
+const sendTokenResponse = (user, statusCode, rememberMe, res) => {
+  const token = generateToken(user._id, rememberMe);
+  const expiryDays = rememberMe ? 7 : 1;
+  
+  const cookieOptions = {
+    expires: new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000),
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+  };
+
+  res.status(statusCode).cookie('token', token, cookieOptions).json({
+    success: true,
+    token,
+    user
+  });
 };

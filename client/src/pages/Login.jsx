@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import toast from 'react-hot-toast';
+import { FiMail, FiLock } from 'react-icons/fi';
+import { RiLeafLine } from 'react-icons/ri';
 
 export const Login = () => {
   const { login } = useAuth();
@@ -9,81 +12,82 @@ export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
-      setError('Please fill in all fields');
+      toast.error('Please fill in all fields');
       return;
     }
 
-    setError('');
     setSubmitting(true);
 
     try {
       await login(email, password, rememberMe);
+      toast.success('Welcome back!');
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Invalid email or password');
+      console.error(err);
+      toast.error(err.response?.data?.message || 'Invalid email or password');
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F7F5F0] px-6 py-20 font-sans">
-      <div className="w-full max-w-[400px] space-y-8">
+    <div className="min-h-[calc(100-80px)] flex items-center justify-center bg-background px-6 py-20 font-sans">
+      <div className="w-full max-w-[400px] bg-white border border-border-light rounded-2xl shadow-premium p-8 text-left space-y-6">
+        
         {/* Editorial Header */}
-        <div className="text-center md:text-left space-y-2">
-          <Link to="/" className="text-3xl font-semibold tracking-tight text-[#111111] font-sans">
-            Authoryn<span className="text-[#5B4FE8]">.</span>
-          </Link>
-          <p className="text-xs text-[#666666] tracking-wider uppercase font-light">
-            Welcome back. Log in to continue.
+        <div className="text-center space-y-3">
+          <div className="flex justify-center">
+            <div className="p-3 bg-soft-accent/30 rounded-2xl text-accent-green text-3xl">
+              <RiLeafLine />
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold font-serif text-text-primary">Welcome back</h2>
+          <p className="text-xs text-text-secondary tracking-wide uppercase font-semibold">
+            Log in to continue to workspace.
           </p>
         </div>
 
-        {/* Error Display */}
-        {error && (
-          <div className="p-3 border border-red-600/30 bg-red-600/5 text-red-600 text-xs font-semibold rounded-[4px]">
-            {error}
-          </div>
-        )}
-
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1">
-            <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-[#111111]">
+            <label htmlFor="email" className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
               Email Address
             </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-transparent border border-[#111111]/30 rounded-[4px] focus:outline-none focus:border-[#5B4FE8] text-[15px] font-light"
-              placeholder="you@example.com"
-              required
-            />
+            <div className="relative">
+              <FiMail className="absolute left-3.5 top-3.5 text-text-secondary text-base" />
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-background border border-border-light focus:border-accent-green rounded-xl focus:outline-none text-[14px] font-medium transition-colors"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
           </div>
 
           <div className="space-y-1">
-            <div className="flex justify-between items-center">
-              <label htmlFor="password" className="text-xs font-semibold uppercase tracking-wider text-[#111111]">
-                Password
-              </label>
+            <label htmlFor="password" className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+              Password
+            </label>
+            <div className="relative">
+              <FiLock className="absolute left-3.5 top-3.5 text-text-secondary text-base" />
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-background border border-border-light focus:border-accent-green rounded-xl focus:outline-none text-[14px] font-medium transition-colors"
+                placeholder="••••••••"
+                required
+              />
             </div>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-transparent border border-[#111111]/30 rounded-[4px] focus:outline-none focus:border-[#5B4FE8] text-[15px] font-light"
-              placeholder="••••••••"
-              required
-            />
           </div>
 
           {/* Remember Me */}
@@ -93,9 +97,9 @@ export const Login = () => {
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="w-4.5 h-4.5 text-[#5B4FE8] bg-transparent border-[#111111]/30 rounded focus:ring-0 accent-[#5B4FE8]"
+              className="w-4 h-4 text-accent-green bg-transparent border-border-light rounded focus:ring-0 accent-accent-green"
             />
-            <label htmlFor="rememberMe" className="text-xs text-[#666666] select-none font-light cursor-pointer">
+            <label htmlFor="rememberMe" className="text-xs text-text-secondary select-none font-medium cursor-pointer">
               Remember me for 7 days
             </label>
           </div>
@@ -103,19 +107,19 @@ export const Login = () => {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full btn-outline py-3 mt-4 text-sm font-semibold tracking-wider uppercase flex justify-center items-center"
+            className="w-full btn-primary py-3 mt-4 text-sm font-semibold tracking-wider uppercase flex justify-center items-center shadow-sm"
           >
             {submitting ? (
-              <div className="w-5 h-5 border-t-2 border-r-2 border-[#F7F5F0] rounded-full animate-spin"></div>
+              <div className="w-5 h-5 border-t-2 border-r-2 border-white rounded-full animate-spin"></div>
             ) : (
               'Log In'
             )}
           </button>
         </form>
 
-        <div className="text-center md:text-left text-xs text-[#666666] font-light">
+        <div className="text-center text-xs text-text-secondary font-medium pt-2">
           Don't have an account?{' '}
-          <Link to="/register" className="text-[#5B4FE8] font-semibold hover:underline">
+          <Link to="/register" className="text-accent-green hover:underline font-bold">
             Register here
           </Link>
         </div>

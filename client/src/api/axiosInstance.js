@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: '', // Uses relative paths, relies on Vite proxy in development
+  withCredentials: true,
 });
 
 // Request interceptor to add Authorization token dynamically

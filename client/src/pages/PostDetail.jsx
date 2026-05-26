@@ -6,6 +6,9 @@ import { formatAbsoluteDate } from '../utils/formatDate';
 import LikeButton from '../components/LikeButton';
 import AuthorCard from '../components/AuthorCard';
 import CommentSection from '../components/CommentSection';
+import { PostDetailSkeleton } from '../components/SkeletonLoader';
+import { RiLeafLine } from 'react-icons/ri';
+import { FiEye, FiMessageSquare, FiClock } from 'react-icons/fi';
 
 export const PostDetail = () => {
   const { slug } = useParams();
@@ -29,66 +32,74 @@ export const PostDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F7F5F0]">
-        <div className="text-center font-sans font-light">
-          <div className="w-6 h-6 border-t-2 border-r-2 border-[#111111] animate-spin mx-auto mb-4"></div>
-          Reading story...
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-background font-sans">
+        <PostDetailSkeleton />
       </div>
     );
   }
 
   if (error || !post) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F7F5F0] px-6 font-sans">
-        <h2 className="text-2xl font-semibold font-serif text-[#111111] mb-2">Story Not Found</h2>
-        <p className="text-sm text-[#666666] font-light mb-6">{error || 'Could not load post.'}</p>
-        <Link to="/" className="btn-outline text-xs px-4 py-2">
-          ← Back to Feed
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background px-6 font-sans text-center">
+        <h2 className="text-2xl font-bold font-serif text-text-primary mb-2">Story Not Found</h2>
+        <p className="text-sm text-text-secondary font-light mb-6">{error || 'Could not load post.'}</p>
+        <Link to="/explore" className="btn-outline text-xs px-6 py-2.5 rounded-full font-bold">
+          &larr; Back to Explore
         </Link>
       </div>
     );
   }
 
-  const readTime = calculateReadTime(post.body);
-  const coverUrl = post.coverImage
-    ? (post.coverImage.startsWith('/') ? `http://localhost:5000${post.coverImage}` : post.coverImage)
-    : 'https://images.unsplash.com/photo-1516414447565-b14be0adf13e?auto=format&fit=crop&w=1200&q=80'; // fallback cover
+  const readTime = calculateReadTime(post.content);
+  const coverUrl = post.thumbnail
+    ? (post.thumbnail.startsWith('/') ? `http://localhost:5000${post.thumbnail}` : post.thumbnail)
+    : 'https://images.unsplash.com/photo-1516414447565-b14be0adf13e?auto=format&fit=crop&w=1200&q=80';
 
   return (
-    <article className="min-h-screen bg-[#F7F5F0] pb-24 font-sans">
+    <article className="min-h-screen bg-background pb-24 font-sans text-left">
+      
       {/* Cover Image - full-width, 480px tall */}
-      <div className="w-full h-[480px] overflow-hidden border-b border-[#111111]/15">
+      <div className="w-full h-[320px] md:h-[480px] overflow-hidden border-b border-border-light relative bg-gray-900">
         <img
           src={coverUrl}
           alt={post.title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-90"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark-section/50 to-transparent"></div>
+        
+        {/* Floating Category Tag inside Banner */}
+        {post.category && (
+          <div className="absolute bottom-6 left-6 md:left-12">
+            <span className="bg-accent-green text-white text-xs uppercase font-extrabold tracking-widest px-3 py-1 rounded-md shadow-md">
+              {post.category}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="max-w-[720px] mx-auto px-6 mt-12 space-y-8">
         {/* Title - serif 42px */}
-        <h1 className="text-4xl md:text-[42px] font-bold text-[#111111] leading-tight font-serif left-aligned">
+        <h1 className="text-3xl md:text-[40px] font-bold text-text-primary leading-tight font-serif">
           {post.title}
         </h1>
 
         {/* Meta Row: author avatar + name, date, read time, views, like button */}
-        <div className="flex flex-wrap items-center justify-between gap-4 py-4 border-t border-b border-[#111111]/10 text-xs text-[#666666]">
+        <div className="flex flex-wrap items-center justify-between gap-4 py-4 border-t border-b border-border-light text-xs text-text-secondary">
           <div className="flex items-center space-x-3">
             {/* Author Avatar & Name */}
             {post.author?.avatar ? (
               <img
                 src={post.author.avatar.startsWith('/') ? `http://localhost:5000${post.author.avatar}` : post.author.avatar}
                 alt={post.author.name}
-                className="w-8 h-8 rounded-full object-cover border border-[#111111]/20"
+                className="w-8 h-8 rounded-full object-cover border border-border-light shadow-sm"
               />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-[#111111] text-[#F7F5F0] flex items-center justify-center text-xs font-bold uppercase">
+              <div className="w-8 h-8 rounded-full bg-accent-green text-white flex items-center justify-center text-xs font-bold uppercase shadow-sm">
                 {post.author?.name ? post.author.name.charAt(0) : 'U'}
               </div>
             )}
             <div className="flex flex-col">
-              <Link to={`/author/${post.author?.username}`} className="font-semibold text-[#111111] hover:text-[#5B4FE8] transition-colors">
+              <Link to={`/author/${post.author?.username}`} className="font-bold text-text-primary hover:text-accent-green transition-colors">
                 {post.author?.name}
               </Link>
               <span className="font-light">{formatAbsoluteDate(post.createdAt)}</span>
@@ -97,9 +108,18 @@ export const PostDetail = () => {
 
           {/* Stats: Read Time, Views, Comments */}
           <div className="flex items-center space-x-4">
-            <span className="font-light">{readTime}</span>
-            <span className="font-light">{post.viewCount} {post.viewCount === 1 ? 'view' : 'views'}</span>
-            <span className="font-light">{commentCount} {commentCount === 1 ? 'comment' : 'comments'}</span>
+            <span className="font-light flex items-center space-x-1" title="Reading Time">
+              <FiClock />
+              <span>{readTime}</span>
+            </span>
+            <span className="font-light flex items-center space-x-1" title="Views">
+              <FiEye />
+              <span>{post.viewCount} {post.viewCount === 1 ? 'view' : 'views'}</span>
+            </span>
+            <span className="font-light flex items-center space-x-1" title="Comments">
+              <FiMessageSquare />
+              <span>{commentCount} {commentCount === 1 ? 'comment' : 'comments'}</span>
+            </span>
             
             {/* Like Button */}
             <LikeButton postId={post._id} initialLikes={post.likes} />
@@ -108,8 +128,8 @@ export const PostDetail = () => {
 
         {/* Body Text: 19px, line-height 1.85, max-width 720px */}
         <div
-          className="post-content-body text-[19px] leading-[1.85] text-[#111111] font-serif font-light space-y-6 break-words"
-          dangerouslySetInnerHTML={{ __html: post.body }}
+          className="post-content-body text-[17px] md:text-[18px] leading-[1.85] text-text-primary font-serif font-light space-y-6 break-words"
+          dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
         {/* Tags shown at end of post body */}
@@ -118,8 +138,8 @@ export const PostDetail = () => {
             {post.tags.map((tag) => (
               <Link
                 key={tag}
-                to={`/tag/${tag}`}
-                className="text-[11px] font-medium tracking-wide uppercase px-2.5 py-1 border border-[#111111]/30 text-[#111111] hover:border-[#5B4FE8] hover:text-[#5B4FE8] transition-all duration-150 rounded-[4px]"
+                to={`/explore?search=${tag}`}
+                className="text-[10px] font-bold tracking-wider uppercase px-3 py-1 border border-border-light text-text-secondary hover:border-accent-green hover:text-accent-green transition-all rounded-md"
               >
                 #{tag}
               </Link>

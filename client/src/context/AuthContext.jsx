@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../api/axiosInstance';
 
 const AuthContext = createContext();
 
@@ -8,31 +8,23 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
   const [loading, setLoading] = useState(true);
 
-  // Set default authorization header for axios on startup if token exists
-  if (token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  } else {
-    delete axios.defaults.headers.common['Authorization'];
-  }
-
   useEffect(() => {
     const fetchCurrentUser = async () => {
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-
+      // If we don't have token in localStorage, we can still let the cookie try to authenticate
       try {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        const response = await axios.get('/api/auth/me');
+        const response = await api.get('/api/auth/me');
         if (response.data.success) {
           setUser(response.data.user);
+          if (response.data.token && !token) {
+            localStorage.setItem('token', response.data.token);
+            setToken(response.data.token);
+          }
         } else {
-          logout();
+          handleLocalLogout();
         }
       } catch (error) {
         console.error('Verify token failed:', error);
-        logout();
+        handleLocalLogout();
       } finally {
         setLoading(false);
       }
@@ -42,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = async (email, password, rememberMe) => {
-    const response = await axios.post('/api/auth/login', {
+    const response = await api.post('/api/auth/login', {
       email,
       password,
       rememberMe
@@ -55,13 +47,12 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('token', newToken);
       setToken(newToken);
       setUser(newUser);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
       return response.data;
     }
   };
 
   const register = async (name, email, username, password) => {
-    const response = await axios.post('/api/auth/register', {
+    const response = await api.post('/api/auth/register', {
       name,
       email,
       username,
@@ -75,16 +66,24 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('token', newToken);
       setToken(newToken);
       setUser(newUser);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
       return response.data;
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await api.post('/api/auth/logout');
+    } catch (err) {
+      console.error('API logout failed:', err);
+    } finally {
+      handleLocalLogout();
+    }
+  };
+
+  const handleLocalLogout = () => {
     localStorage.removeItem('token');
     setToken(null);
     setUser(null);
-    delete axios.defaults.headers.common['Authorization'];
   };
 
   const updateUser = (updatedUser) => {

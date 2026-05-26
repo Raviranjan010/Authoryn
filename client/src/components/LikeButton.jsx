@@ -62,8 +62,8 @@ export const LikeButton = ({ postId, initialLikes = [] }) => {
   return (
     <button
       onClick={handleLike}
-      className={`flex items-center space-x-2 px-3 py-1.5 border border-[#111111]/20 hover:border-[#111111]/60 rounded-[4px] bg-transparent text-xs font-sans transition-all duration-200 cursor-pointer ${
-        isLiked ? 'text-[#5B4FE8] border-[#5B4FE8]/40' : 'text-[#666666]'
+      className={`flex items-center space-x-2 px-3 py-1.5 border border-border-light rounded-md bg-transparent text-xs font-sans transition-all duration-200 cursor-pointer ${
+        isLiked ? 'text-accent-green border-accent-green/45 bg-soft-accent/25' : 'text-text-secondary hover:text-text-primary hover:border-text-secondary'
       }`}
     >
       <svg
@@ -72,8 +72,8 @@ export const LikeButton = ({ postId, initialLikes = [] }) => {
         strokeWidth="1.5"
         stroke="currentColor"
         className={`w-4.5 h-4.5 transition-transform duration-200 ${
-          isLiked ? 'fill-current stroke-[#5B4FE8]' : 'fill-none'
-        } ${isAnimating ? 'scale-150 text-[#5B4FE8]' : 'scale-100'}`}
+          isLiked ? 'fill-current stroke-accent-green' : 'fill-none'
+        } ${isAnimating ? 'scale-120 text-accent-green' : 'scale-100'}`}
       >
         <path
           strokeLinecap="round"

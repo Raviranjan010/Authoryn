@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import toast from 'react-hot-toast';
+import { FiMail, FiLock, FiUser } from 'react-icons/fi';
+import { RiLeafLine } from 'react-icons/ri';
 
 export const Register = () => {
   const { register } = useAuth();
@@ -10,140 +13,147 @@ export const Register = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !email || !username || !password) {
-      setError('Please fill in all fields');
+      toast.error('Please fill in all fields');
       return;
     }
 
     if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+      toast.error('Password must be 6 or more characters');
       return;
     }
 
-    // Basic username format check
-    const usernameRegex = /^[a-zA-Z0-9_-]+$/;
-    if (!usernameRegex.test(username)) {
-      setError('Username can only contain alphanumeric characters, underscores, and dashes');
-      return;
-    }
-
-    setError('');
     setSubmitting(true);
 
     try {
       await register(name, email, username, password);
+      toast.success('Account created successfully!');
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Try a different username/email.');
+      console.error(err);
+      toast.error(err.response?.data?.message || 'Failed to register account. Username or email may already be taken.');
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F7F5F0] px-6 py-20 font-sans">
-      <div className="w-full max-w-[400px] space-y-8">
+    <div className="min-h-[calc(100-80px)] flex items-center justify-center bg-background px-6 py-20 font-sans">
+      <div className="w-full max-w-[400px] bg-white border border-border-light rounded-2xl shadow-premium p-8 text-left space-y-6">
+        
         {/* Editorial Header */}
-        <div className="text-center md:text-left space-y-2">
-          <Link to="/" className="text-3xl font-semibold tracking-tight text-[#111111] font-sans">
-            Authoryn<span className="text-[#5B4FE8]">.</span>
-          </Link>
-          <p className="text-xs text-[#666666] tracking-wider uppercase font-light">
-            Create an account. Defy gravity.
+        <div className="text-center space-y-3">
+          <div className="flex justify-center">
+            <div className="p-3 bg-soft-accent/30 rounded-2xl text-accent-green text-3xl">
+              <RiLeafLine />
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold font-serif text-text-primary">Create account</h2>
+          <p className="text-xs text-text-secondary tracking-wide uppercase font-semibold">
+            Join the LeafBlog writer community.
           </p>
         </div>
 
-        {/* Error Display */}
-        {error && (
-          <div className="p-3 border border-red-600/30 bg-red-600/5 text-red-600 text-xs font-semibold rounded-[4px]">
-            {error}
-          </div>
-        )}
-
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
+          
+          {/* Full Name */}
           <div className="space-y-1">
-            <label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-[#111111]">
+            <label htmlFor="name" className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
               Full Name
             </label>
-            <input
-              id="name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2.5 bg-transparent border border-[#111111]/30 rounded-[4px] focus:outline-none focus:border-[#5B4FE8] text-[15px] font-light"
-              placeholder="Jane Doe"
-              required
-            />
+            <div className="relative">
+              <FiUser className="absolute left-3.5 top-3.5 text-text-secondary text-base" />
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-background border border-border-light focus:border-accent-green rounded-xl focus:outline-none text-[14px] font-medium transition-colors"
+                placeholder="Alex Johnson"
+                required
+              />
+            </div>
           </div>
 
+          {/* Username */}
           <div className="space-y-1">
-            <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-[#111111]">
-              Email Address
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2.5 bg-transparent border border-[#111111]/30 rounded-[4px] focus:outline-none focus:border-[#5B4FE8] text-[15px] font-light"
-              placeholder="jane@example.com"
-              required
-            />
-          </div>
-
-          <div className="space-y-1">
-            <label htmlFor="username" className="text-xs font-semibold uppercase tracking-wider text-[#111111]">
+            <label htmlFor="username" className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
               Username
             </label>
-            <input
-              id="username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-2.5 bg-transparent border border-[#111111]/30 rounded-[4px] focus:outline-none focus:border-[#5B4FE8] text-[15px] font-light"
-              placeholder="janedoe"
-              required
-            />
+            <div className="relative">
+              <span className="absolute left-3.5 top-2.5 text-text-secondary text-[14px] font-medium font-mono">@</span>
+              <input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full pl-8 pr-4 py-2.5 bg-background border border-border-light focus:border-accent-green rounded-xl focus:outline-none text-[14px] font-medium transition-colors"
+                placeholder="alexj"
+                required
+              />
+            </div>
           </div>
 
+          {/* Email */}
           <div className="space-y-1">
-            <label htmlFor="password" className="text-xs font-semibold uppercase tracking-wider text-[#111111]">
+            <label htmlFor="email" className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+              Email Address
+            </label>
+            <div className="relative">
+              <FiMail className="absolute left-3.5 top-3.5 text-text-secondary text-base" />
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-background border border-border-light focus:border-accent-green rounded-xl focus:outline-none text-[14px] font-medium transition-colors"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Password */}
+          <div className="space-y-1">
+            <label htmlFor="password" className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
               Password
             </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2.5 bg-transparent border border-[#111111]/30 rounded-[4px] focus:outline-none focus:border-[#5B4FE8] text-[15px] font-light"
-              placeholder="•••••••• (min 6 chars)"
-              required
-            />
+            <div className="relative">
+              <FiLock className="absolute left-3.5 top-3.5 text-text-secondary text-base" />
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-background border border-border-light focus:border-accent-green rounded-xl focus:outline-none text-[14px] font-medium transition-colors"
+                placeholder="••••••••"
+                required
+              />
+            </div>
           </div>
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full btn-outline py-3 mt-4 text-sm font-semibold tracking-wider uppercase flex justify-center items-center"
+            className="w-full btn-primary py-3 mt-4 text-sm font-semibold tracking-wider uppercase flex justify-center items-center shadow-sm"
           >
             {submitting ? (
-              <div className="w-5 h-5 border-t-2 border-r-2 border-[#F7F5F0] rounded-full animate-spin"></div>
+              <div className="w-5 h-5 border-t-2 border-r-2 border-white rounded-full animate-spin"></div>
             ) : (
-              'Create Account'
+              'Sign Up'
             )}
           </button>
         </form>
 
-        <div className="text-center md:text-left text-xs text-[#666666] font-light">
+        <div className="text-center text-xs text-text-secondary font-medium pt-2">
           Already have an account?{' '}
-          <Link to="/login" className="text-[#5B4FE8] font-semibold hover:underline">
-            Login here
+          <Link to="/login" className="text-accent-green hover:underline font-bold">
+            Log in here
           </Link>
         </div>
       </div>

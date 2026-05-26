@@ -7,7 +7,7 @@ const Post = require('../models/Post');
 exports.getComments = async (req, res, next) => {
   try {
     const comments = await Comment.find({ post: req.params.postId })
-      .populate('author', 'name username avatar')
+      .populate('user', 'name username avatar')
       .sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -26,10 +26,10 @@ exports.getComments = async (req, res, next) => {
 exports.getAllComments = async (req, res, next) => {
   try {
     const comments = await Comment.find()
-      .populate('author', 'name username avatar')
+      .populate('user', 'name username avatar')
       .populate('post', 'title slug')
       .sort({ createdAt: -1 })
-      .limit(3);
+      .limit(6); // increased limit for richer dashboard analytics
 
     res.status(200).json({
       success: true,
@@ -45,10 +45,10 @@ exports.getAllComments = async (req, res, next) => {
 // @access  Private
 exports.addComment = async (req, res, next) => {
   try {
-    const { body } = req.body;
+    const { text } = req.body;
     const postId = req.params.postId;
 
-    if (!body) {
+    if (!text) {
       return res.status(400).json({ success: false, message: 'Please add comment content' });
     }
 
@@ -59,12 +59,12 @@ exports.addComment = async (req, res, next) => {
 
     let comment = await Comment.create({
       post: postId,
-      author: req.user._id,
-      body
+      user: req.user._id,
+      text
     });
 
-    // Populate author details to send back to client immediately
-    comment = await comment.populate('author', 'name username avatar');
+    // Populate user details to send back to client immediately
+    comment = await comment.populate('user', 'name username avatar');
 
     res.status(201).json({
       success: true,
@@ -87,7 +87,7 @@ exports.deleteComment = async (req, res, next) => {
     }
 
     // Make sure user is comment owner or admin
-    if (comment.author.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+    if (comment.user.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       return res.status(403).json({ success: false, message: 'Not authorized to delete this comment' });
     }
 
