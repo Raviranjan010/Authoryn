@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0..1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #F7F5F0;
+    color: #111111;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6, .editorial-serif {
+    font-family: 'Fraunces', 'Playfair Display', serif;
+  }
+}
+
+/* Custom Underline Animation (left-to-right slide) */
+.hover-underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.hover-underline::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: #5B4FE8;
+  transform-origin: bottom left;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* Outline Buttons (filled on hover, sharp 4px radius) */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: 1px solid #111111;
+  color: #111111;
+  background-color: transparent;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  background-color: #111111;
+  color: #F7F5F0;
+}
+
+.btn-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: 1px solid #5B4FE8;
+  color: #5B4FE8;
+  background-color: transparent;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-accent:hover {
+  background-color: #5B4FE8;
+  color: #F7F5F0;
+}
+
+/* Scrollbar styles for tag filter list */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Quill Editor custom override to fit the editorial aesthetics */
+.ql-container.ql-snow {
+  border: 1px solid #111111 !important;
+  font-family: 'Fraunces', serif !important;
+  font-size: 19px !important;
+  background-color: transparent !important;
+  color: #111111 !important;
+}
+
+.ql-toolbar.ql-snow {
+  border: 1px solid #111111 !important;
+  border-bottom: none !important;
+  background-color: #F7F5F0 !important;
+}
+
+/* Syntax block styling */
+pre {
+  background-color: #1A1A2E;
+  color: #E2E8F0;
+  padding: 16px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 14px;
+  overflow-x: auto;
+  margin: 16px 0;
+}

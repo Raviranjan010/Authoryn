@@ -1,0 +1,21 @@
+{
+  "name": "authoryn",
+  "version": "1.0.0",
+  "description": "Authoryn - Premium MERN Blogging Platform",
+  "main": "server/server.js",
+  "scripts": {
+    "install-server": "npm install --prefix server",
+    "install-client": "npm install --prefix client",
+    "install-all": "npm run install-server && npm run install-client",
+    "build-client": "npm run build --prefix client",
+    "heroku-postbuild": "npm run build-client",
+    "start": "node server/server.js",
+    "server-dev": "npm run dev --prefix server",
+    "client-dev": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
+    "seed": "node server/seed.js"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
