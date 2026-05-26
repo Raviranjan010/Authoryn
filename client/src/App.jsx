@@ -17,7 +17,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-[#F7F5F0]">
+        <div className="min-h-screen bg-[#fbfaf6]">
           <Navbar />
           <Routes>
             {/* Public routes */}

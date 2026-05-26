@@ -8,14 +8,7 @@ export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 18);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -26,67 +19,49 @@ export const Navbar = () => {
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 w-full z-50 bg-[#F7F5F0] transition-all duration-200 ${
-        scrolled ? 'border-t-2 border-[#111111]/30 py-4' : 'border-t-2 border-transparent py-5'
-      }`}
-    >
-      <div className="max-w-[1200px] mx-auto px-6 flex justify-between items-center">
-        {/* Logo Left */}
-        <Link to="/" className="text-2xl font-semibold tracking-tight text-[#111111]">
-          Authoryn<span className="text-[#5B4FE8]">.</span>
+    <nav className={`fixed left-0 top-0 z-50 w-full px-4 py-4 transition-all duration-200 sm:px-6 lg:px-8 ${scrolled ? 'bg-[#fbfaf6]/88 shadow-[0_12px_40px_rgba(16,17,22,0.08)] backdrop-blur' : 'bg-transparent'}`}>
+      <div className="mx-auto flex max-w-[1780px] items-center justify-between gap-4">
+        <Link to="/" className="brand-mark text-2xl font-semibold tracking-tight text-[#101116]">
+          Authoryn <span aria-hidden="true">✦</span>
         </Link>
 
-        {/* Links Center */}
-        <div className="hidden md:flex space-x-8 items-center text-sm font-medium tracking-wide">
-          <Link to="/" className="text-[#111111] hover-underline">
-            Feed
-          </Link>
-          {user && (
-            <>
-              <Link to="/dashboard" className="text-[#111111] hover-underline">
-                Dashboard
-              </Link>
-              <Link to="/write" className="text-[#111111] hover-underline">
-                Write
-              </Link>
-            </>
-          )}
+        <div className="hidden rounded-full border border-[#101116]/10 bg-white/78 px-2 py-2 shadow-[0_10px_35px_rgba(16,17,22,0.06)] backdrop-blur md:flex">
+          <Link to="/" className="top-nav-link active">Home</Link>
+          <Link to="/tag/design" className="top-nav-link">Tags</Link>
+          {user && <Link to="/dashboard" className="top-nav-link">Dashboard</Link>}
+          {user && <Link to="/write" className="top-nav-link">Write</Link>}
         </div>
 
-        {/* Auth Buttons Right */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center gap-3">
           {user ? (
-            <div className="flex items-center space-x-4">
-              <Link to={`/author/${user.username}`} className="flex items-center space-x-2">
+            <>
+              <Link to={`/author/${user.username}`} className="flex items-center gap-2">
                 {user.avatar ? (
                   <img
                     src={user.avatar.startsWith('/') ? `http://localhost:5000${user.avatar}` : user.avatar}
                     alt={user.name}
-                    className="w-7 h-7 rounded-full object-cover border border-[#111111]"
+                    className="h-9 w-9 rounded-full border border-[#101116]/15 object-cover"
                   />
                 ) : (
-                  <div className="w-7 h-7 rounded-full bg-[#111111] text-[#F7F5F0] flex items-center justify-center text-xs font-bold uppercase">
+                  <div className="grid h-9 w-9 place-items-center rounded-full bg-[#101116] text-xs font-bold uppercase text-[#fbfaf6]">
                     {user.name.charAt(0)}
                   </div>
                 )}
-                <span className="hidden sm:inline text-xs font-semibold text-[#111111] hover:text-[#5B4FE8] transition-colors">
-                  @{user.username}
-                </span>
+                <span className="hidden text-sm font-bold text-[#101116] sm:inline">@{user.username}</span>
               </Link>
-              <button onClick={handleLogout} className="btn-outline text-xs px-3 py-1.5">
+              <button onClick={handleLogout} className="btn-soft hidden sm:inline-flex">
                 Logout
               </button>
-            </div>
+            </>
           ) : (
-            <div className="flex items-center space-x-3">
-              <Link to="/login" className="text-xs font-medium text-[#111111] hover:text-[#5B4FE8] transition-colors px-3 py-1.5">
+            <>
+              <Link to="/login" className="hidden text-sm font-bold text-[#101116] transition hover:text-[#2932ff] sm:inline">
                 Login
               </Link>
-              <Link to="/register" className="btn-outline text-xs px-3.5 py-1.5">
+              <Link to="/register" className="btn-primary">
                 Register
               </Link>
-            </div>
+            </>
           )}
         </div>
       </div>
