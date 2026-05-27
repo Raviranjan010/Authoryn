@@ -18,6 +18,7 @@ export const Explore = () => {
   const [totalPages, setTotalPages] = useState(1);
   
   // URL Params Binding
+  
   const category = searchParams.get('category') || '';
   const search = searchParams.get('search') || '';
   const sort = searchParams.get('sort') || 'newest';
