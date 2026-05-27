@@ -7,6 +7,7 @@ import BlogCard from '../components/BlogCard';
 import { BlogGridSkeleton } from '../components/SkeletonLoader';
 import { FiArrowLeft, FiEdit3, FiFileText } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+// import { formatDistanceToNow } from 'date-fns';
 
 export const AuthorProfile = () => {
   const { username } = useParams();

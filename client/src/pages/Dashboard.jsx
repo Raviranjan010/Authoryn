@@ -78,6 +78,7 @@ export const Dashboard = () => {
       result = result.filter(p => p.status === statusFilter);
     }
 
+
     setFilteredPosts(result);
   }, [search, statusFilter, posts]);
 
@@ -278,6 +279,7 @@ export const Dashboard = () => {
                               <td className="p-4 text-text-secondary text-xs whitespace-nowrap">
                                 {formatAbsoluteDate(post.createdAt)}
                               </td>
+                              {/* <td></td> */}
 
                               {/* Actions */}
                               <td className="p-4 text-right whitespace-nowrap">
