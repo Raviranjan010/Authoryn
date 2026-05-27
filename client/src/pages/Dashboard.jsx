@@ -290,7 +290,7 @@ export const Dashboard = () => {
                                       onClick={() => handleConfirmDelete(post._id)}
                                       className="px-2 py-0.5 text-[10px] font-bold bg-red-600 text-white rounded cursor-pointer"
                                     >
-                                      Yes
+                                      Yes!
                                     </button>
                                     <button
                                       onClick={() => setDeletingId(null)}
