@@ -7,6 +7,7 @@ import BlogCard from '../components/BlogCard';
 import { BlogGridSkeleton } from '../components/SkeletonLoader';
 import { FiArrowLeft, FiEdit3, FiFileText } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+import { getImageUrl } from '../utils/imageUrl';
 // import { formatDistanceToNow } from 'date-fns';
 
 export const AuthorProfile = () => {
@@ -80,7 +81,7 @@ export const AuthorProfile = () => {
           {/* Avatar */}
           {author.avatar ? (
             <img
-              src={author.avatar.startsWith('/') ? `http://localhost:5000${author.avatar}` : author.avatar}
+              src={getImageUrl(author.avatar)}
               alt={author.name}
               className="w-24 h-24 rounded-full object-cover border border-border-light shadow-sm"
             />

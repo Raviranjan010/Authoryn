@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { calculateReadTime } from '../utils/readTime';
 import { formatAbsoluteDate } from '../utils/formatDate';
+import { getImageUrl } from '../utils/imageUrl';
 
 export const PostCard = ({ post }) => {
   // Strip HTML tags for clean text preview
@@ -47,7 +48,7 @@ export const PostCard = ({ post }) => {
           <div className="flex items-center space-x-2 md:mb-3">
             {post.author?.avatar ? (
               <img
-                src={post.author.avatar.startsWith('/') ? `http://localhost:5000${post.author.avatar}` : post.author.avatar}
+                src={getImageUrl(post.author.avatar)}
                 alt={post.author.name}
                 className="w-6 h-6 rounded-full object-cover border border-[#111111]/20"
               />

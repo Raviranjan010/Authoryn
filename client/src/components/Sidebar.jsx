@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { FiFileText, FiPlus, FiSettings, FiLogOut, FiLayout, FiChevronRight } from 'react-icons/fi';
+import { getImageUrl } from '../utils/imageUrl';
 
 export const Sidebar = ({ className = '' }) => {
   const { user, logout } = useAuth();
@@ -40,7 +41,7 @@ export const Sidebar = ({ className = '' }) => {
         <div className="w-10 h-10 rounded-full overflow-hidden border border-border-light bg-accent-green text-white flex items-center justify-center font-bold text-lg uppercase shadow-sm">
           {user?.avatar ? (
             <img 
-              src={user.avatar.startsWith('/') ? `http://localhost:5000${user.avatar}` : user.avatar} 
+              src={getImageUrl(user.avatar)} 
               alt={user.name} 
               className="w-full h-full object-cover" 
             />

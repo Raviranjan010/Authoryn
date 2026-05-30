@@ -15,15 +15,15 @@ const broadcastNewsletter = async (post, author) => {
 
     const hostUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
     const backendUrl = process.env.BACKEND_URL || 'http://localhost:5000';
-    const postUrl = \`\${hostUrl}/post/\${post.slug}\`;
+    const postUrl = `${hostUrl}/post/${post.slug}`;
 
     // Generate preview: strip HTML tags and take the first 350 characters
     const cleanContent = post.content.replace(/<[^>]*>/g, '').substring(0, 350) + '...';
 
     for (const sub of activeSubscribers) {
-      const unsubscribeUrl = \`\${backendUrl}/api/subscribers/unsubscribe?email=\${encodeURIComponent(sub.email)}\`;
+      const unsubscribeUrl = `${backendUrl}/api/subscribers/unsubscribe?email=${encodeURIComponent(sub.email)}`;
       
-      const htmlContent = \`
+      const htmlContent = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -122,36 +122,36 @@ const broadcastNewsletter = async (post, author) => {
   <div class="wrapper">
     <div class="container">
       <div class="header">
-        <a href="\${hostUrl}" class="brand" style="color: #10b981; font-weight: 800; font-size: 24px; text-decoration: none;">Authoryn</a>
+        <a href="${hostUrl}" class="brand" style="color: #10b981; font-weight: 800; font-size: 24px; text-decoration: none;">Authoryn</a>
       </div>
       <div class="content">
-        <div class="category">\${post.category || 'Story'}</div>
-        <h1 class="title">\${post.title}</h1>
-        <div class="author-bar">Published by \${author.name || 'Authoryn Writer'}</div>
+        <div class="category">${post.category || 'Story'}</div>
+        <h1 class="title">${post.title}</h1>
+        <div class="author-bar">Published by ${author.name || 'Authoryn Writer'}</div>
         
         <div class="post-body">
-          <p>\${cleanContent}</p>
+          <p>${cleanContent}</p>
         </div>
 
         <div style="text-align: center;">
-          <a href="\${postUrl}" class="btn-read-more">Read the Full Article</a>
+          <a href="${postUrl}" class="btn-read-more">Read the Full Article</a>
         </div>
       </div>
       <div class="footer">
         <p>You received this email because you subscribed to updates from Authoryn.</p>
         <p>
-          <a href="\${unsubscribeUrl}" class="unsubscribe-link">Unsubscribe</a> from this newsletter.
+          <a href="${unsubscribeUrl}" class="unsubscribe-link">Unsubscribe</a> from this newsletter.
         </p>
       </div>
     </div>
   </div>
 </body>
 </html>
-\`;
+`;
 
       await sendEmail({
         to: sub.email,
-        subject: \`New Post on Authoryn: \${post.title}\`,
+        subject: `New Post on Authoryn: ${post.title}`,
         html: htmlContent
       });
     }

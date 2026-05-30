@@ -5,6 +5,7 @@ import api from '../api/axiosInstance';
 import Sidebar from '../components/Sidebar';
 import toast from 'react-hot-toast';
 import { FiArrowLeft, FiUser, FiCamera, FiCheckCircle } from 'react-icons/fi';
+import { getImageUrl } from '../utils/imageUrl';
 
 export const Settings = () => {
   const { user, updateUser } = useAuth();
@@ -93,9 +94,7 @@ export const Settings = () => {
 
   const currentAvatarUrl = avatarPreview
     ? avatarPreview
-    : (user?.avatar
-        ? (user.avatar.startsWith('/') ? `http://localhost:5000${user.avatar}` : user.avatar)
-        : '');
+    : getImageUrl(user?.avatar);
 
   return (
     <div className="min-h-screen bg-background pt-10 pb-20 px-6 font-sans">

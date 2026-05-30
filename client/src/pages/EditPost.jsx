@@ -6,6 +6,7 @@ import PostEditor from '../components/PostEditor';
 import api from '../api/axiosInstance';
 import toast from 'react-hot-toast';
 import { FiEye, FiEdit3, FiArrowLeft } from 'react-icons/fi';
+import { getImageUrl } from '../utils/imageUrl';
 
 export const EditPost = () => {
   const { id } = useParams();
@@ -133,9 +134,7 @@ export const EditPost = () => {
 
   const currentCoverUrl = imagePreview 
     ? imagePreview 
-    : (existingCoverImage 
-        ? (existingCoverImage.startsWith('/') ? `http://localhost:5000${existingCoverImage}` : existingCoverImage)
-        : '');
+    : getImageUrl(existingCoverImage);
 
   return (
     <div className="min-h-screen bg-background pt-10 pb-20 px-6 font-sans">

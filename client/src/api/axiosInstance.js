@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '', // Uses relative paths, relies on Vite proxy in development
+  baseURL: import.meta.env.VITE_API_URL || '', // Falls back to relative paths, relies on Vite proxy in development
   withCredentials: true,
 });
 

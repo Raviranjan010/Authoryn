@@ -9,6 +9,7 @@ import CommentSection from '../components/CommentSection';
 import { PostDetailSkeleton } from '../components/SkeletonLoader';
 import { RiLeafLine } from 'react-icons/ri';
 import { FiEye, FiMessageSquare, FiClock } from 'react-icons/fi';
+import { getImageUrl } from '../utils/imageUrl';
 
 export const PostDetail = () => {
   const { slug } = useParams();
@@ -52,7 +53,7 @@ export const PostDetail = () => {
 
   const readTime = calculateReadTime(post.content);
   const coverUrl = post.thumbnail
-    ? (post.thumbnail.startsWith('/') ? `http://localhost:5000${post.thumbnail}` : post.thumbnail)
+    ? getImageUrl(post.thumbnail)
     : 'https://images.unsplash.com/photo-1516414447565-b14be0adf13e?auto=format&fit=crop&w=1200&q=80';
 
   return (
@@ -89,7 +90,7 @@ export const PostDetail = () => {
             {/* Author Avatar & Name */}
             {post.author?.avatar ? (
               <img
-                src={post.author.avatar.startsWith('/') ? `http://localhost:5000${post.author.avatar}` : post.author.avatar}
+                src={getImageUrl(post.author.avatar)}
                 alt={post.author.name}
                 className="w-8 h-8 rounded-full object-cover border border-border-light shadow-sm"
               />
