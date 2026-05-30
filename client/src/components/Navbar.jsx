@@ -4,6 +4,7 @@ import useAuth from '../hooks/useAuth';
 import { FiSearch, FiMenu, FiX, FiPlus, FiUser, FiSettings, FiLogOut, FiLayout } from 'react-icons/fi';
 import { RiLeafLine } from 'react-icons/ri';
 import AuthModal from './AuthModal';
+import { getImageUrl } from '../utils/imageUrl';
 
 export const Navbar = () => {
   const { user, logout } = useAuth();
@@ -88,7 +89,7 @@ export const Navbar = () => {
                 >
                   {user.avatar ? (
                     <img 
-                      src={user.avatar.startsWith('/') ? `http://localhost:5000${user.avatar}` : user.avatar} 
+                      src={getImageUrl(user.avatar)} 
                       alt="Avatar" 
                       className="w-full h-full object-cover" 
                     />

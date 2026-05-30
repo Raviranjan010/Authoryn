@@ -4,6 +4,7 @@ import api from '../api/axiosInstance';
 import useAuth from '../hooks/useAuth';
 import { formatRelativeTime } from '../utils/formatDate';
 import toast from 'react-hot-toast';
+import { getImageUrl } from '../utils/imageUrl';
 
 export const CommentSection = ({ postId, onCommentCountChange }) => {
   const { user } = useAuth();
@@ -166,7 +167,7 @@ export const CommentSection = ({ postId, onCommentCountChange }) => {
               {/* Commenter Avatar */}
               {comment.user?.avatar ? (
                 <img
-                  src={comment.user.avatar.startsWith('/') ? `http://localhost:5000${comment.user.avatar}` : comment.user.avatar}
+                  src={getImageUrl(comment.user.avatar)}
                   alt={comment.user.name}
                   className="w-9 h-9 rounded-full object-cover border border-border-light mt-1"
                 />

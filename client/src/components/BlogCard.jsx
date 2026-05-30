@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { calculateReadTime } from '../utils/readTime';
 import { formatAbsoluteDate } from '../utils/formatDate';
 import { FiEye, FiHeart } from 'react-icons/fi';
+import { getImageUrl } from '../utils/imageUrl';
 
 export const BlogCard = ({ post }) => {
   // Strip HTML for clear text excerpt
@@ -16,7 +17,7 @@ export const BlogCard = ({ post }) => {
   const thumbnailFallback = 'https://images.unsplash.com/photo-1516414447565-b14be0adf13e?auto=format&fit=crop&w=600&q=80';
   
   const thumbnailUrl = post.thumbnail
-    ? (post.thumbnail.startsWith('/') ? `http://localhost:5000${post.thumbnail}` : post.thumbnail)
+    ? getImageUrl(post.thumbnail)
     : thumbnailFallback;
 
   return (
@@ -71,7 +72,7 @@ export const BlogCard = ({ post }) => {
         <div className="flex items-center space-x-3 pt-6 mt-6 border-t border-border-light font-sans">
           {post.author?.avatar ? (
             <img 
-              src={post.author.avatar.startsWith('/') ? `http://localhost:5000${post.author.avatar}` : post.author.avatar} 
+              src={getImageUrl(post.author.avatar)} 
               alt={post.author.name} 
               className="w-8 h-8 rounded-full object-cover border border-border-light"
             />

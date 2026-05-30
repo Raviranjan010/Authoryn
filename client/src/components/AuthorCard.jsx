@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getImageUrl } from '../utils/imageUrl';
 
 export const AuthorCard = ({ author }) => {
   if (!author) return null;
@@ -10,7 +11,7 @@ export const AuthorCard = ({ author }) => {
       <Link to={`/author/${author.username}`}>
         {author.avatar ? (
           <img
-            src={author.avatar.startsWith('/') ? `http://localhost:5000${author.avatar}` : author.avatar}
+            src={getImageUrl(author.avatar)}
             alt={author.name}
             className="w-16 h-16 rounded-full object-cover border border-border-light hover:scale-105 transition-transform duration-200"
           />
